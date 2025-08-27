@@ -3,7 +3,7 @@ name: Deploy DevOps3 HTML to EC2
 on:
   push:
     branches:
-      - main   # runs when you push to main branch
+      - main
 
 jobs:
   deploy:
@@ -19,8 +19,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "DevOps3/*.html"
-          target: "/usr/share/nginx/html"
-          overwrite: true
+          target: "~/deploy"   # copy into ec2-user home dir (safe)
 
       - name: Deploy to nginx directory
         uses: appleboy/ssh-action@v0.1.7
@@ -29,5 +28,5 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            sudo mv /home/${{ secrets.EC2_USER }}/deploy/*.html /usr/share/nginx/html/
+            sudo mv ~/deploy/*.html /usr/share/nginx/html/
             sudo systemctl restart nginx
