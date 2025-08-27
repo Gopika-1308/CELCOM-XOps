@@ -20,6 +20,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "DevOps3/*.html"
           target: "/home/${{ secrets.EC2_USER }}/deploy/"
+          overwrite: true
 
       - name: Deploy to nginx directory
         uses: appleboy/ssh-action@v0.1.7
